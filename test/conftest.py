@@ -8,6 +8,27 @@ from selenium.webdriver.chrome.service import Service
 
 
 # ──────────────────────────────────────────────
+# 0. PRE-CREATE OUTPUT DIRECTORIES
+# ──────────────────────────────────────────────
+def pytest_configure(config):
+    base = os.path.join(os.getcwd(), "test", "support_files")
+    os.makedirs(os.path.join(base, "allure-results"), exist_ok=True)
+    os.makedirs(os.path.join(base, "screenshots"), exist_ok=True)
+
+
+def pytest_sessionfinish(session, exitstatus):
+    import subprocess
+    timestamp      = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    allure_results = os.path.join(os.getcwd(), "test", "support_files", "allure-results")
+    allure_report  = os.path.join(os.getcwd(), "test", "report", timestamp)
+    subprocess.run(
+        ["allure", "generate", allure_results, "-o", allure_report],
+        check=False,
+        shell=True
+    )
+
+
+# ──────────────────────────────────────────────
 # 1. DRIVER FIXTURE
 # ──────────────────────────────────────────────
 @pytest.fixture(scope="function")
@@ -24,7 +45,7 @@ def driver(request):
     options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(options=options)
-    driver.implicitly_wait(10)
+    #driver.implicitly_wait(10)
 
     # ✅ Attach driver to the pytest request node — key for hooks
     request.node._driver = driver
@@ -54,7 +75,7 @@ def capture_screenshot(driver, name: str, attach_to_allure: bool = True) -> str:
     filename = f"{safe_name}_{timestamp}.png"
 
     # Save locally (optional but useful for debugging)
-    screenshots_dir = os.path.join(os.getcwd(), "support_files", "screenshots")
+    screenshots_dir = os.path.join(os.getcwd(), "test", "support_files", "screenshots")
     os.makedirs(screenshots_dir, exist_ok=True)
     filepath = os.path.join(screenshots_dir, filename)
     driver.save_screenshot(filepath)
@@ -117,7 +138,7 @@ def pytest_runtest_makereport(item, call):
 
             # Attach extra metadata to Allure
             allure.attach(
-                f"Test: {test_name}\nError: {str(report.longreprtext)}",
+                f"Test: {test_name}\nError: {str(report.longrepr)}",
                 name="Failure Details",
                 attachment_type=allure.attachment_type.TEXT
             )

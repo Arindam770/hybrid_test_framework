@@ -17,6 +17,7 @@ class Toml_Support:
     
 
 if __name__ == "__main__":
-    toml_obj = Toml_Support("sample_file\\DummyData.toml")
+    toml_obj = Toml_Support("test\\config\\app_details.toml")
     data = toml_obj.read_toml()
-    toml_obj.write_toml(data)
+    # toml_obj.write_toml(data)
+    print(data)
