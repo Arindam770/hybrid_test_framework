@@ -8,7 +8,7 @@ class CSV_Helper:
 
     def read_csv(self):
 
-        all_csv_etails = []
+        all_csv_details = []
         with open(self.path, "r") as file:
             reader = csv.DictReader(file)
 
@@ -20,9 +20,9 @@ class CSV_Helper:
                 #         break
                 # if is_empty:
                 #     continue
-                all_csv_etails.append(row)
-        print(all_csv_etails)
-        return all_csv_etails
+                all_csv_details.append(row)
+        #print(all_csv_details)
+        return all_csv_details
     
     def write_csv(self, data):
         header = data[0].keys()

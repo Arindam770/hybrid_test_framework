@@ -24,7 +24,7 @@ class Excel_Helper:
                 else:
                     temp_dict[header[num]] = ""
             all_excel_details.append(temp_dict)
-        print(all_excel_details)
+        #print(all_excel_details)
         return all_excel_details
 
     def write_excel(self, data):

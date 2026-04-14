@@ -15,8 +15,13 @@ class UserAction:
     def refreshPage(self):
         self.driver.refresh()
 
-    def sendKeys(self, byLocator, txt:str):
-        elm = WebDriverWait(self.driver, ecWait).until(EC.visibility_of_element_located(byLocator)).send_keys(txt)
+    def sendKeys(self, byLocator, txt: str, clear_first=True):
+        elm = WebDriverWait(self.driver, ecWait).until(EC.visibility_of_element_located(byLocator))
+    
+        if clear_first:
+            elm.clear()
+            
+        elm.send_keys(txt)
 
     def click(self, byLocator):
         elm = WebDriverWait(self.driver, ecWait).until(EC.element_to_be_clickable(byLocator))

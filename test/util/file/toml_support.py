@@ -8,7 +8,7 @@ class Toml_Support:
     def read_toml(self):
         with open(self.path, "r") as file:
             toml_details = toml.load(file)
-        print(toml_details)
+        #print(toml_details)
         return toml_details
 
     def write_toml(self, data):

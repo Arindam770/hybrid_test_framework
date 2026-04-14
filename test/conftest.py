@@ -54,7 +54,7 @@ def capture_screenshot(driver, name: str, attach_to_allure: bool = True) -> str:
     filename = f"{safe_name}_{timestamp}.png"
 
     # Save locally (optional but useful for debugging)
-    screenshots_dir = os.path.join(os.getcwd(), "report", "screenshots")
+    screenshots_dir = os.path.join(os.getcwd(), "support_files", "screenshots")
     os.makedirs(screenshots_dir, exist_ok=True)
     filepath = os.path.join(screenshots_dir, filename)
     driver.save_screenshot(filepath)
@@ -117,7 +117,7 @@ def pytest_runtest_makereport(item, call):
 
             # Attach extra metadata to Allure
             allure.attach(
-                f"Test: {test_name}\nError: {report.longreprtext}",
+                f"Test: {test_name}\nError: {str(report.longreprtext)}",
                 name="Failure Details",
                 attachment_type=allure.attachment_type.TEXT
             )

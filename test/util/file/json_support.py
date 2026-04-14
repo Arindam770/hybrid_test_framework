@@ -1,5 +1,4 @@
 import json
-from textwrap import indent
 
 class Json_Support:
 
@@ -9,7 +8,7 @@ class Json_Support:
     def read_Json(self):
         with open (self.file_path, "r") as file:
             json_details = json.load(file)
-        print(json_details)
+        #print(json_details)
         return json_details
         
     def write_json(self, data):
